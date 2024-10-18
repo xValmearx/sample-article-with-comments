@@ -55,7 +55,7 @@ ROOT_URLCONF = "django_project.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -125,3 +125,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Delcare the Custom User Model that Django should use.
 AUTH_USER_MODEL = "accounts.CustomUser"
+
+# Log in and Logout redirect urls
+LOGIN_REDIRECT_URL = "home"
+LOGOUT_REDIRECT_URL = "home"
