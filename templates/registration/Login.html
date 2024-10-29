@@ -5,9 +5,12 @@
 
 {% block content %}
   <h2>Log In</h2>
-  <form method = "POST">
+  <form method="POST">
     {% csrf_token %}
-    {{form | crispy}}
-    <button type = 'submit' class = "btn btn-success ml-2">Log In</button>
+    {{form|crispy}}
+    <button class = "btn btn-success ml-2" type = "submit">Log In</button>
   </form>
+  <p>
+    <a href = {% url "password_reset" %}>Forgot your passowrd?</a>
+  </p>
 {% endblock content %}
