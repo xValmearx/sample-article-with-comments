@@ -8,11 +8,20 @@
     <p>by {{article.author}} | {{article.date}}</p>
     <p>{{article.body}} </p>
   </div>
+
+  <hr>
+  <h4>comments</h4>
+  {% for comment in article.comments.all %}
+    <p>{{comment.author}} &middot; {{comment.text}}</p>
+  {% endfor %}
+<hr>
   {% if article.author == user %}
+  <h4>Nav</h4>
     <p>
       <a href = {% url "article_edit" article.pk%}>Edit</a> |
       <a href = {% url "article_delete" article.pk%}>Delete</a>
   </p>
+
 {% endif %}
 <p>back to <a href = {% url "article_list" %}>All Articles</a>.</p>
 {% endblock content %}
