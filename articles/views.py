@@ -55,17 +55,17 @@ class ArticleListView(LoginRequiredMixin, ListView):
 #         return context
 
 
-class ArticleDetailView(LoginRequiredMixin, SingleObjectMixin, FormView):
+class ArticleDetailView(LoginRequiredMixin, DetailView, FormView):
     """Artivle Detial View"""
 
     model = Article
     form_class = CommentForm
     template_name = "article_detail.html"
 
-    def get(self, request, *args, **kwargs):
-        """handle get response"""
-        self.object = self.get_object()
-        return super().get(request, *args, **kwargs)
+    # def get(self, request, *args, **kwargs):
+    #     """handle get response"""
+    #     self.object = self.get_object()
+    #     return super().get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         """handle post request"""
