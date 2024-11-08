@@ -28,39 +28,44 @@ class ArticleListView(LoginRequiredMixin, ListView):
     template_name = "article_list.html"
 
 
-class ArticleDetailView(LoginRequiredMixin, View):
-    """Article Detial View"""
+# class ArticleDetailView(LoginRequiredMixin, View):
+#     """Article Detial View"""
 
-    def get(self, request, *args, **kwargs):
-        """Get Request"""
-        view = CommentGet.as_view()
-        return view(request, *args, **kwargs)
+#     def get(self, request, *args, **kwargs):
+#         """Get Request"""
+#         view = CommentGet.as_view()
+#         return view(request, *args, **kwargs)
 
-    def post(self, request, *args, **kwargs):
-        """Post Request"""
-        view = CommentPost.as_view()
-        return view(request, *args, **kwargs)
-
-
-class CommentGet(LoginRequiredMixin, DetailView):
-    """Article Detial View / Add Comment Form"""
-
-    model = Article
-    template_name = "article_detail.html"
-
-    def get_context_data(self, **kwargs):
-        """Get contex data"""
-        context = super().get_context_data(**kwargs)
-        context["form"] = CommentForm()
-        return context
+#     def post(self, request, *args, **kwargs):
+#         """Post Request"""
+#         view = CommentPost.as_view()
+#         return view(request, *args, **kwargs)
 
 
-class CommentPost(SingleObjectMixin, FormView):
-    """Comment Post"""
+# class CommentGet(LoginRequiredMixin, DetailView):
+#     """Article Detial View / Add Comment Form"""
+
+#     model = Article
+#     template_name = "article_detail.html"
+
+#     def get_context_data(self, **kwargs):
+#         """Get contex data"""
+#         context = super().get_context_data(**kwargs)
+#         context["form"] = CommentForm()
+#         return context
+
+
+class ArticleDetailView(LoginRequiredMixin, SingleObjectMixin, FormView):
+    """Artivle Detial View"""
 
     model = Article
     form_class = CommentForm
     template_name = "article_detail.html"
+
+    def get(self, request, *args, **kwargs):
+        """handle get response"""
+        self.object = self.get_object()
+        return super().get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         """handle post request"""
@@ -68,9 +73,9 @@ class CommentPost(SingleObjectMixin, FormView):
         return super().post(request, *args, **kwargs)
 
     def form_valid(self, form):
-
         comment = form.save(commit=False)
         comment.article = self.object
+        comment.author = self.request.user
         comment.save()
         return super().form_valid(form)
 
