@@ -1,4 +1,7 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+
 
 {% block title %}Detial{% endblock title %}
 
@@ -15,8 +18,15 @@
     <p>{{comment.author}} &middot; {{comment.text}}</p>
   {% endfor %}
 <hr>
+
+<h4>Add a comment</h4>
+<form action = "" method = "POST">
+  {% csrf_token %}
+  {{form|crispy}}
+  <button class = "btn btn-success ml-2" type = "submit">Save</button>
+</form>
+
   {% if article.author == user %}
-  <h4>Nav</h4>
     <p>
       <a href = {% url "article_edit" article.pk%}>Edit</a> |
       <a href = {% url "article_delete" article.pk%}>Delete</a>
