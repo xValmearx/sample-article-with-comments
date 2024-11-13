@@ -2,17 +2,15 @@ from django.contrib.auth.mixins import (
     LoginRequiredMixin,
     UserPassesTestMixin,
 )
-from django.http import HttpResponse
 
+from django.http import JsonResponse
+from django.views import View
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView, FormView
-
-from django.views.generic.detail import SingleObjectMixin
 
 from django.urls import reverse_lazy, reverse
 
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
-from django.views import View
 
 from .forms import CommentForm
 
@@ -28,44 +26,12 @@ class ArticleListView(LoginRequiredMixin, ListView):
     template_name = "article_list.html"
 
 
-# class ArticleDetailView(LoginRequiredMixin, View):
-#     """Article Detial View"""
-
-#     def get(self, request, *args, **kwargs):
-#         """Get Request"""
-#         view = CommentGet.as_view()
-#         return view(request, *args, **kwargs)
-
-#     def post(self, request, *args, **kwargs):
-#         """Post Request"""
-#         view = CommentPost.as_view()
-#         return view(request, *args, **kwargs)
-
-
-# class CommentGet(LoginRequiredMixin, DetailView):
-#     """Article Detial View / Add Comment Form"""
-
-#     model = Article
-#     template_name = "article_detail.html"
-
-#     def get_context_data(self, **kwargs):
-#         """Get contex data"""
-#         context = super().get_context_data(**kwargs)
-#         context["form"] = CommentForm()
-#         return context
-
-
 class ArticleDetailView(LoginRequiredMixin, DetailView, FormView):
     """Artivle Detial View"""
 
     model = Article
     form_class = CommentForm
     template_name = "article_detail.html"
-
-    # def get(self, request, *args, **kwargs):
-    #     """handle get response"""
-    #     self.object = self.get_object()
-    #     return super().get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         """handle post request"""
@@ -122,3 +88,11 @@ class ArticleDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def test_func(self):
         obj = self.get_object()
         return obj.author == self.request.user
+
+
+class ArticleLikeView(LoginRequiredMixin, View):
+    """like view"""
+
+    def get(self, request, *args, **kwargs):
+        """Get Request"""
+        return JsonResponse({"foo": "bar"})

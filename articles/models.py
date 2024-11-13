@@ -14,6 +14,12 @@ class Article(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="articles")
 
+    likes = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        related_name="liked_article",
+        blank=True,
+    )
+
     def __str__(self):
         """string method"""
         return self.title
@@ -21,6 +27,10 @@ class Article(models.Model):
     def get_absolute_url(self):
         """Get the absolute url for the model"""
         return reverse("article_detail", kwargs={"pk": self.pk})
+
+    def get_liked_url(self):
+        """get Like url based on pk"""
+        return reverse("article_link", kwargs={"pk": self.pk})
 
 
 class Comment(models.Model):

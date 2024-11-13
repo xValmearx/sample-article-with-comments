@@ -21,6 +21,29 @@
 
       <div class = "card-body">
         {{article.body}}
+        <p>
+
+          <!article is the instance of getting an article>
+          <!with defines a varible>
+          {% with user_likes=article.likes.all %}
+          <button
+              data-id="{{article.id}}"
+              data-action="{%if user in user_likes%}un{% endif%}like"
+              data-like_url="{{article.get_like_url}}"
+              class="
+              btn
+              btn-{% if user not in user_likes %}outline-{% endif %}primary
+              like_button
+              "
+              >
+              <i
+              class="like_icon bi-hand-thumbs-up {% if user in user_likes %}-fill{% endif %}"
+              ></i>
+              <span class="like_count">{{user_likes|length}}</span>
+              Likes
+        </button>
+          {%endwith%}
+        </p>
         <br>
         {% if article.author == user %}
           <a href = {% url "article_edit" article.pk%}>Edit</a>
