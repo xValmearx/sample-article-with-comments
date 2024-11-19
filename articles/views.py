@@ -95,4 +95,25 @@ class ArticleLikeView(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
         """Get Request"""
-        return JsonResponse({"foo": "bar"})
+
+        article_id = request.GET.get("article_id", None)
+        article_action = request.GET.get("article_action", None)
+
+        print(article_id)
+        print(article_action)
+
+        article = Article.objects.get(id=article_id)
+
+        if article_action == "like":
+            # like stuff
+            article.likes.add(request.user)
+            article.save()
+        else:
+            # unlike stuff
+            article.likes.remove(request.user)
+
+        return JsonResponse(
+            {
+                "success": True,
+            }
+        )
